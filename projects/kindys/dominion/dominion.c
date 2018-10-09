@@ -838,19 +838,19 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     switch (card) 
     {
         case adventurer:
-            playAdventurer(currentPlayer, state, temphand);
+            return playAdventurer(currentPlayer, state, temphand);
 
         case smithy:
-            playSmithy(handPos, currentPlayer, state);
+            return playSmithy(handPos, currentPlayer, state);
 
         case village:
-            playVillage(handPos, currentPlayer, state);
+            return playVillage(handPos, currentPlayer, state);
 
         case steward:
-            playSteward(choice1, choice2, choice3, currentPlayer, state, handPos);
+            return playSteward(choice1, choice2, choice3, currentPlayer, state, handPos);
 
    		case great_hall:
-   			playGreatHall(handPos, currentPlayer, state);
+   			return playGreatHall(handPos, currentPlayer, state);
 
         case council_room:
             //+4 Cards
