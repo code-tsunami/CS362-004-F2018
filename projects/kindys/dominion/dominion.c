@@ -256,7 +256,7 @@ int playCard(int handPos, int choice1, int choice2, int choice3, struct gameStat
     }
 
     //play card
-    if (cardEffect(card, choice1, choice2, choice3, state, handPos, & coin_bonus) < 0) 
+    if (cardEffect(card, choice1, choice2, choice3, state, handPos, &coin_bonus) < 0) 
     {
         return -1;
     }
@@ -720,7 +720,9 @@ int playAdventurer(int currentPlayer, struct gameState* state, int* temphand)
     int cardDrawn;
     int z = 0; // this is the counter for the temp hand
 
-    while (drawntreasure < 2) 
+    // changed to continue drawing cards until drawn treasure is 3 rather than 1
+    // while (drawntreasure) < 4 vs while (drawntreasure) < 2
+    while (drawntreasure < 4) 
     {
         if (state->deckCount[currentPlayer] < 1) 
         { 
@@ -802,9 +804,7 @@ int playSteward(int choice1, int choice2, int choice3, int currentPlayer, struct
 
 int playGreatHall(int handPos, int currentPlayer, struct gameState* state)
 {
-	// Should be +1 card but changed to +2 cards
 	//+1 Card
-	drawCard(currentPlayer, state);
 	drawCard(currentPlayer, state);
 
 	//+1 Actions
