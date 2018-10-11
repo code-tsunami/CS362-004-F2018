@@ -720,7 +720,7 @@ int playAdventurer(int currentPlayer, struct gameState* state, int* temphand)
     int cardDrawn;
     int z = 0; // this is the counter for the temp hand
 
-    // changed to continue drawing cards until drawn treasure is 3 rather than 1
+    // changed to continue drawing cards until drawn treasure is 4 rather than 2
     // while (drawntreasure) < 4 vs while (drawntreasure) < 2
     while (drawntreasure < 4) 
     {
