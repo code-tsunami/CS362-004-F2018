@@ -25,7 +25,8 @@ testAll: dominion.o testSuite.c
 interface.o: interface.h interface.c
 	$(CC) -c interface.c -g  $(CFLAGS)
 
-unittests: unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.o rngs.o
+unittests: unittest1.c unittest2.c unittest3.c unittest4.c \
+	cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.o rngs.o
 	# $(CC) $(CFLAGS) unittest1.c dominion.o rngs.o -o unittest1
 	# $(CC) $(CFLAGS) unittest2.c dominion.o rngs.o -o unittest2
 	# $(CC) $(CFLAGS) unittest3.c dominion.o rngs.o -o unittest3
