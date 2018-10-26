@@ -89,6 +89,8 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 
 Cards not in game should initialize supply position to -1 */
 
+int compare(const void * a, const void * b);
+
 int shuffle(int player, struct gameState *state);
 /* Assumes all cards are now in deck array (or hand/played):  discard is
  empty */
