@@ -1,5 +1,7 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 CC = gcc
+NUMBERS = 1 2 3 4
+OUT_FILE = unittestresults.out
 
 rngs.o: rngs.h rngs.c
 	$(CC) -c rngs.c -g  $(CFLAGS)
@@ -27,53 +29,18 @@ interface.o: interface.h interface.c
 
 unittests: unittest1.c unittest2.c unittest3.c unittest4.c \
 	cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.o rngs.o
-	$(CC) $(CFLAGS) unittest1.c dominion.o rngs.o -o unittest1
-	$(CC) $(CFLAGS) unittest2.c dominion.o rngs.o -o unittest2
-	$(CC) $(CFLAGS) unittest3.c dominion.o rngs.o -o unittest3
-	$(CC) $(CFLAGS) unittest4.c dominion.o rngs.o -o unittest4
-	$(CC) $(CFLAGS) cardtest1.c dominion.o rngs.o -o cardtest1
-	$(CC) $(CFLAGS) cardtest2.c dominion.o rngs.o -o cardtest2
-	$(CC) $(CFLAGS) cardtest3.c dominion.o rngs.o -o cardtest3
-	$(CC) $(CFLAGS) cardtest4.c dominion.o rngs.o -o cardtest4
-
+	$(foreach el,$(NUMBERS),$(CC) $(CFLAGS) unittest$(el).c dominion.o rngs.o -o unittest$(el);)
+	$(foreach el,$(NUMBERS),$(CC) $(CFLAGS) cardtest$(el).c dominion.o rngs.o -o cardtest$(el);)
+	
 runtests: testDrawCard 
 	./testDrawCard &> unittestresult.out
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
 unittestresults: unittests
-	echo "Result for running unit tests:" > unittestresults.out
-	echo "unittest1.c:" >> unittestresults.out
-	./unittest1 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-	
-	echo "unittest2.c:" >> unittestresults.out
-	./unittest2 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-	
-	echo "unittest3.c:" >> unittestresults.out
-	./unittest3 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-	
-	echo "unittest4.c:" >> unittestresults.out
-	./unittest4 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-
-	echo "cardtest1.c:" >> unittestresults.out
-	./cardtest1 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-	
-	echo "cardtest2.c:" >> unittestresults.out
-	./cardtest2 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-
-	echo "cardtest3.c:" >> unittestresults.out
-	./cardtest3 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-
-	echo "cardtest4.c:" >> unittestresults.out
-	./cardtest4 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
+	echo "Result for running unit tests:" > $(OUT_FILE)
+	$(foreach el,$(NUMBERS),echo "unittest$(el).c" >> $(OUT_FILE);./unittest$(el) >> $(OUT_FILE);gcov -f dominion.c >> $(OUT_FILE);)
+	$(foreach el,$(NUMBERS),echo "cardtest$(el).c" >> $(OUT_FILE);./cardtest$(el) >> $(OUT_FILE);gcov -f dominion.c >> $(OUT_FILE);)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
