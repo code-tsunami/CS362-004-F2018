@@ -201,6 +201,9 @@ void testAdventurerCard()
     asserttrue(testState->numActions == state->numActions);
 
     // check victory points; should increase by 1
+    printHeader("CHECK POST-PLAY:");
+    printf(" victory points...\nvictory points = %d; expected = %d\n", scoreFor(currentPlayer, testState), scoreFor(currentPlayer, state) + 1);
+    asserttrue(scoreFor(currentPlayer, testState) == scoreFor(currentPlayer, state) + 1);
 
     // check num played cards of player; should be 1 after playing Adventurer
     printHeader("CHECK POST-PLAY:");
