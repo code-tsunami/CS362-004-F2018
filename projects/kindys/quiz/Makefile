@@ -8,12 +8,13 @@ ifeq ($(shell hostname),TheTsunami)
 endif
 CFLAGS = -Wall -pedantic
 VGFLAGS = --leak-check=full --show-reachable=yes
-FILES_TO_RM = $(shell find . -maxdepth 1 -type f ! -name "*.c" ! -name "Makefile" ! -name "*.zip")
+FILES_TO_RM = $(shell find . -maxdepth 1 -type f ! -name "*.c" ! -name "Makefile")
 
 default: $(EXEC)
 
 ${EXEC}: ${SRC}
 	${CC} ${CFLAGS} ${SRC} -o ${EXEC}
+	./${EXEC}
 
 .PHONY: valgrind
 valgrind:
