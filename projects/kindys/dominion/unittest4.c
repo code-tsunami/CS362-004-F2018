@@ -8,24 +8,34 @@
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include "unittests.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define FUNCTION    "gainCard"
 
+void asserttrue(bool expr)
+{
+    if(expr)
+        printf( ANSI_COLOR_GREEN     "PASSED ✅\n\n" ANSI_COLOR_RESET);
+    else
+        printf( ANSI_COLOR_RED     "FAILED ❌\n\n" ANSI_COLOR_RESET);
+}
+
 void testGainCard()
 {
+    int res;
     struct gameState* state = (struct gameState*)malloc(sizeof(struct gameState));
     state->whoseTurn = 0;
     state->supplyCount[province] = 0; // set number of province cards in supply to zero
     int player = state->whoseTurn;
 
 	printf("TEST 1: 0 province cards left in supply\n");
-    if(gainCard(province, state, 0, player) == -1)
-    	printf("gainCard(): PASSED when testing 0 province cards left to gain in supply\n\n");
-    else
-    	printf("gainCard(): FAILED when testing 0 province cards left to gain in supply\n\n");
-
+    res = gainCard(province, state, 0, player);
+    printf("res of gainCard: %d; expected: %d\n", res, -1);
+    asserttrue(res == -1);
+    
     state->supplyCount[province] = 1; // set number of province cards in supply to 1
     state->discardCount[state->whoseTurn] = 10; // set number of cards in player's discard pile to 10
     
@@ -34,12 +44,15 @@ void testGainCard()
         state->discard[state->whoseTurn][i] = duchy;
 
 	printf("TEST 2: 1 province card left in supply to be gained by player and placed in their discard pile\n");
-    if(gainCard(province, state, 0, player) == 0 &&
-    	state->discard[state->whoseTurn][state->discardCount[state->whoseTurn] - 1] == province &&
-    	state->discardCount[state->whoseTurn] == 11)
-    	printf("gainCard(): PASSED when testing 1 province card gained and placed in discard\n\n");
-    else
-    	printf("gainCard(): FAILED when testing 1 province card gained and placed in discard\n\n");
+    res = gainCard(province, state, 0, player);
+    printf("res of gainCard: %d; expected: %d\n", res, 0);
+    printf( "top of discard pile: %d; expected: %d\n", 
+            state->discard[state->whoseTurn][state->discardCount[state->whoseTurn] - 1], province);
+    printf( "discard count: %d; expected: %d\n", 
+            state->discardCount[state->whoseTurn], 11);
+    asserttrue( res == 0 && 
+                state->discard[state->whoseTurn][state->discardCount[state->whoseTurn] - 1] == province &&
+                state->discardCount[state->whoseTurn] == 11);
 
     state->supplyCount[province] = 1; // set number of province cards in supply to 1
     state->deckCount[state->whoseTurn] = 10; // set number of cards in player's discard pile to 10
@@ -49,13 +62,16 @@ void testGainCard()
         state->deck[state->whoseTurn][i] = duchy;
 
 	printf("TEST 3: 1 province card left in supply to be gained by player and placed in their deck\n");
-    if(gainCard(province, state, 1, player) == 0 &&
-    	state->deck[state->whoseTurn][state->deckCount[state->whoseTurn] - 1] == province &&
-    	state->deckCount[state->whoseTurn] == 11)
-    	printf("gainCard(): PASSED when testing 1 province card gained and placed in deck\n\n");
-    else
-    	printf("gainCard(): FAILED when testing 1 province card gained and placed in deck\n\n");
-
+    res = gainCard(province, state, 1, player);
+    printf("res of gainCard: %d; expected: %d\n", res, 0);
+    printf( "top of deck: %d; expected: %d\n", 
+            state->deck[state->whoseTurn][state->deckCount[state->whoseTurn] - 1], province);
+    printf( "deck count: %d; expected: %d\n", 
+            state->deckCount[state->whoseTurn], 11);
+    asserttrue( res == 0 && 
+                state->deck[state->whoseTurn][state->deckCount[state->whoseTurn] - 1] == province &&
+                state->deckCount[state->whoseTurn] == 11);
+    
     state->supplyCount[province] = 1; // set number of province cards in supply to 1
     state->handCount[state->whoseTurn] = 10; // set number of cards in player's discard pile to 10
     
@@ -64,12 +80,15 @@ void testGainCard()
         state->hand[state->whoseTurn][i] = duchy;
 
 	printf("TEST 4: 1 province card left in supply to be gained by player and placed in their hand\n");
-    if(gainCard(province, state, 1, player) == 0 &&
-    	state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1] == province &&
-    	state->handCount[state->whoseTurn] == 11)
-    	printf("gainCard(): PASSED when testing 1 province card gained and placed in hand\n\n");
-    else
-    	printf("gainCard(): FAILED when testing 1 province card gained and placed in hand\n\n");
+    res = gainCard(province, state, 2, player);
+    printf("res of gainCard: %d; expected: %d\n", res, 0);
+    printf( "top of deck: %d; expected: %d\n", 
+            state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1], province);
+    printf( "deck count: %d; expected: %d\n", 
+            state->handCount[state->whoseTurn], 11);
+    asserttrue( res == 0 && 
+                state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1] == province &&
+                state->handCount[state->whoseTurn] == 11);
 
     free(state);
 }

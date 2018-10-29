@@ -2,6 +2,7 @@ CFLAGS= -Wall -fpic -coverage -lm -std=c99
 CC = gcc
 NUMBERS = 1 2 3 4
 OUT_FILE = unittestresults.out
+SHELL:=bash
 
 rngs.o: rngs.h rngs.c
 	$(CC) -c rngs.c -g  $(CFLAGS)
@@ -39,8 +40,8 @@ runtests: testDrawCard
 
 unittestresults: unittests
 	echo "Result for running unit tests:" > $(OUT_FILE)
-	$(foreach el,$(NUMBERS),echo "unittest$(el).c" >> $(OUT_FILE);./unittest$(el) >> $(OUT_FILE);gcov -f dominion.c >> $(OUT_FILE);)
-	$(foreach el,$(NUMBERS),echo "cardtest$(el).c" >> $(OUT_FILE);./cardtest$(el) >> $(OUT_FILE);gcov -f dominion.c >> $(OUT_FILE);)
+	$(foreach el,$(NUMBERS),echo "unittest$(el).c" >> $(OUT_FILE);./unittest$(el) >> $(OUT_FILE);gcov -f -b dominion.c >> $(OUT_FILE);)
+	$(foreach el,$(NUMBERS),echo "cardtest$(el).c" >> $(OUT_FILE);./cardtest$(el) >> $(OUT_FILE);gcov -f -b dominion.c >> $(OUT_FILE);)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
