@@ -70,11 +70,17 @@ void testVillageCard()
     int seed = 100;
     int numPlayers = 2;
     int currentPlayer = 0;
+    int nextPlayer = 1;
     struct gameState* state = (struct gameState*)malloc(sizeof(struct gameState));
     struct gameState* testState = (struct gameState*)malloc(sizeof(struct gameState));
 
     initializeGame(numPlayers, kingdomCards, seed, state); // initialize a game state and player cards
-    state->hand[currentPlayer][handPos] = village; // ensure the first card in player's hand is Village
+    int card = state->hand[currentPlayer][handPos];
+    if(card != village) {
+        state->supplyCount[card]++;
+        state->supplyCount[village]--;
+        state->hand[currentPlayer][handPos] = village; // ensure the first card in player's hand is Village
+    }
     memcpy(testState, state, sizeof(struct gameState)); // copy contents of state to testState for comparisons
     
     // check first card in hand; should be Village -- for tests to work
@@ -91,6 +97,17 @@ void testVillageCard()
     printHeader("CHECK PRE-PLAY:");
     printf(" num discarded...\nnum discarded = %d; expected = %d\n", testState->playedCardCount, 0);
     asserttrue(testState->playedCardCount == 0);
+
+    // check first card in other player's hand; should be the same pre/post currentPlayer's play
+    printHeader("CHECK PRE-PLAY (nextPlayer):");
+    printf(" first card in hand...\nfirst card in hand: %d, expected = %d\n", 
+            testState->hand[nextPlayer][handPos], state->hand[nextPlayer][handPos]);
+    asserttrue(testState->hand[nextPlayer][handPos] == state->hand[nextPlayer][handPos]);
+
+    // check hand count for other player; should be the same pre/post currentPlayer's play
+    printHeader("CHECK PRE-PLAY (nextPlayer):");
+    printf(" hand count...\nhand count = %d; expected = %d\n", testState->handCount[nextPlayer], state->handCount[nextPlayer]);
+    asserttrue(testState->handCount[nextPlayer] == state->handCount[nextPlayer]);
 
     cardEffect(village, choice1, choice2, choice3, testState, handPos, &bonus); // play Village card
 
@@ -131,6 +148,26 @@ void testVillageCard()
     printHeader("CHECK POST-PLAY:");
     printf(" last discarded...\nlast discarded card: %d; expected = %d\n", testState->discard[currentPlayer][testState->discardCount[currentPlayer] - 1], state->hand[currentPlayer][handPos]);
     asserttrue(testState->discard[currentPlayer][testState->discardCount[currentPlayer] - 1] == state->hand[currentPlayer][handPos]);
+
+    // check first card in other player's hand; should be the same pre/post currentPlayer's play
+    printHeader("CHECK POST-PLAY (nextPlayer):");
+    printf(" first card in hand...\nfirst card in hand: %d, expected = %d\n", 
+            testState->hand[nextPlayer][handPos], state->hand[nextPlayer][handPos]);
+    asserttrue(testState->hand[nextPlayer][handPos] == state->hand[nextPlayer][handPos]);
+
+    // check hand count for other player; should be the same pre/post currentPlayer's play
+    printHeader("CHECK POST-PLAY (nextPlayer):");
+    printf(" hand count...\nhand count = %d; expected = %d\n", testState->handCount[nextPlayer], state->handCount[nextPlayer]);
+    asserttrue(testState->handCount[nextPlayer] == state->handCount[nextPlayer]);
+
+    // check supply count for kingdom cards
+    printHeader("CHECK POST-PLAY:");
+    printf(" supply count of each card...\n\n");
+    int i;
+    for(i = adventurer; i <= treasure_map; i++) {
+        printf("card id: %d, supply count: %d; expected: %d\n", i, testState->supplyCount[i], state->supplyCount[i]);
+        asserttrue(testState->supplyCount[i] == state->supplyCount[i]);
+    }
 
     free(testState);
     free(state);
