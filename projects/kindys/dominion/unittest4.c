@@ -82,9 +82,9 @@ void testGainCard()
 	printf("TEST 4: 1 estate card left in supply to be gained by player and placed in their hand\n");
     res = gainCard(estate, state, 2, player);
     printf("res of gainCard: %d; expected: %d\n", res, 0);
-    printf( "top of deck: %d; expected: %d\n", 
+    printf( "last card in hand: %d; expected: %d\n", 
             state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1], estate);
-    printf( "deck count: %d; expected: %d\n", 
+    printf( "hand count: %d; expected: %d\n", 
             state->handCount[state->whoseTurn], 11);
     asserttrue( res == 0 && 
                 state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1] == estate &&
