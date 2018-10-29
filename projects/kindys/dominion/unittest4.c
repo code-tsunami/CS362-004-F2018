@@ -50,9 +50,12 @@ void testGainCard()
             state->discard[state->whoseTurn][state->discardCount[state->whoseTurn] - 1], estate);
     printf( "discard count: %d; expected: %d\n", 
             state->discardCount[state->whoseTurn], 11);
+    printf( "supply count of card: %d; expected: %d\n", 
+            state->supplyCount[estate], 0);
     asserttrue( res == 0 && 
                 state->discard[state->whoseTurn][state->discardCount[state->whoseTurn] - 1] == estate &&
-                state->discardCount[state->whoseTurn] == 11);
+                state->discardCount[state->whoseTurn] == 11 &&
+                state->supplyCount[estate] == 0);
 
     state->supplyCount[estate] = 1; // set number of estate cards in supply to 1
     state->deckCount[state->whoseTurn] = 10; // set number of cards in player's discard pile to 10
@@ -68,9 +71,12 @@ void testGainCard()
             state->deck[state->whoseTurn][state->deckCount[state->whoseTurn] - 1], estate);
     printf( "deck count: %d; expected: %d\n", 
             state->deckCount[state->whoseTurn], 11);
+    printf( "supply count of card: %d; expected: %d\n", 
+            state->supplyCount[estate], 0);
     asserttrue( res == 0 && 
                 state->deck[state->whoseTurn][state->deckCount[state->whoseTurn] - 1] == estate &&
-                state->deckCount[state->whoseTurn] == 11);
+                state->deckCount[state->whoseTurn] == 11 &&
+                state->supplyCount[estate] == 0);
     
     state->supplyCount[estate] = 1; // set number of estate cards in supply to 1
     state->handCount[state->whoseTurn] = 10; // set number of cards in player's discard pile to 10
@@ -86,9 +92,12 @@ void testGainCard()
             state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1], estate);
     printf( "hand count: %d; expected: %d\n", 
             state->handCount[state->whoseTurn], 11);
+    printf( "supply count of card: %d; expected: %d\n", 
+            state->supplyCount[estate], 0);
     asserttrue( res == 0 && 
                 state->hand[state->whoseTurn][state->handCount[state->whoseTurn] - 1] == estate &&
-                state->handCount[state->whoseTurn] == 11);
+                state->handCount[state->whoseTurn] == 11 &&
+                state->supplyCount[estate] == 0);
 
     free(state);
 }
