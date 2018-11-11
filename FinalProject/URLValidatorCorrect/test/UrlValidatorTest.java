@@ -91,7 +91,7 @@ protected void setUp() {
          statusPerLine = 6;
       }
       do {
-          StringBuilder testBuffer = new StringBuilder();
+         StringBuilder testBuffer = new StringBuilder();
          boolean expected = true;
          for (int testPartsIndexIndex = 0; testPartsIndexIndex < testPartsIndex.length; ++testPartsIndexIndex) {
             int index = testPartsIndex[testPartsIndexIndex];
@@ -102,8 +102,8 @@ protected void setUp() {
          String url = testBuffer.toString();
          boolean result = urlVal.isValid(url);
          if(result == true)
-        	 System.out.println(url);
-         assertEquals(url, expected, result);
+             System.out.printf("url being tested is: %s; result is \"%s\"; expected is \"%s\"%n", url, result ? "valid": "invalid", expected ? "valid" : "invalid");
+            assertEquals(url, expected, result);
          if (printStatus) {
             if (printIndex) {
                System.out.print(testPartsIndextoString());
@@ -120,7 +120,7 @@ protected void setUp() {
                printed = 0;
             }
          }
-      } while (incrementTestPartsIndex(testPartsIndex, testObjects));
+          } while (incrementTestPartsIndex(testPartsIndex, testObjects));
       if (printStatus) {
          System.out.println();
       }
