@@ -1,7 +1,9 @@
 CFLAGS= -Wall -fpic -coverage -lm -std=c99
 CC = gcc
-NUMBERS = 1 2 3 4
-OUT_FILE = unittestresults.out
+CARDTEST_NUMBERS = 1 2 3 4
+CARDTEST_OUTFILE = unittestresults.out
+RANDOMTEST_POSTFIX = card1 card2 adventurer
+RANDOMTEST_OUTFILE = randomtestresults.out
 SHELL:=bash
 
 rngs.o: rngs.h rngs.c
@@ -30,8 +32,11 @@ interface.o: interface.h interface.c
 
 unittests: unittest1.c unittest2.c unittest3.c unittest4.c \
 	cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.o rngs.o
-	$(foreach el,$(NUMBERS),$(CC) $(CFLAGS) unittest$(el).c dominion.o rngs.o -o unittest$(el);)
-	$(foreach el,$(NUMBERS),$(CC) $(CFLAGS) cardtest$(el).c dominion.o rngs.o -o cardtest$(el);)
+	$(foreach el,$(CARDTEST_NUMBERS),$(CC) $(CFLAGS) unittest$(el).c dominion.o rngs.o -o unittest$(el);)
+	$(foreach el,$(CARDTEST_NUMBERS),$(CC) $(CFLAGS) cardtest$(el).c dominion.o rngs.o -o cardtest$(el);)
+
+cardtests: randomtestcard1.c randomtestcard2.c randomtestadventurer.c dominion.o rngs.o
+	$(foreach el,$(RANDOMTEST_POSTFIX),$(CC) $(CFLAGS) randomtest$(el).c dominion.o rngs.o -o randomtest$(el);)
 	
 runtests: testDrawCard 
 	./testDrawCard &> unittestresult.out
@@ -39,9 +44,13 @@ runtests: testDrawCard
 	cat dominion.c.gcov >> unittestresult.out
 
 unittestresults: unittests
-	echo "Result for running unit tests:" > $(OUT_FILE)
-	$(foreach el,$(NUMBERS),echo "unittest$(el).c" >> $(OUT_FILE);./unittest$(el) >> $(OUT_FILE);gcov -f -b dominion.c >> $(OUT_FILE);)
-	$(foreach el,$(NUMBERS),echo "cardtest$(el).c" >> $(OUT_FILE);./cardtest$(el) >> $(OUT_FILE);gcov -f -b dominion.c >> $(OUT_FILE);)
+	echo "Result for running unit tests:" > $(CARDTEST_OUTFILE)
+	$(foreach el,$(CARDTEST_NUMBERS),echo "unittest$(el).c" >> $(CARDTEST_OUTFILE);./unittest$(el) >> $(CARDTEST_OUTFILE);gcov -f -b dominion.c >> $(CARDTEST_OUTFILE);)
+	$(foreach el,$(CARDTEST_NUMBERS),echo "cardtest$(el).c" >> $(CARDTEST_OUTFILE);./cardtest$(el) >> $(CARDTEST_OUTFILE);gcov -f -b dominion.c >> $(CARDTEST_OUTFILE);)
+
+randomtestresults: randomtests
+	echo "Result for running randomcard tests:" > $(RANDOMTEST_OUTFILE)
+	$(foreach el,$(CARDTEST_NUMBERS),echo "randomcardtest$(el).c" >> $(RANDOMTEST_OUTFILE);./randomcardtest$(el) >> $(RANDOMTEST_OUTFILE);gcov -f -b dominion.c >> $(RANDOMTEST_OUTFILE);)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
@@ -50,5 +59,7 @@ all: playdom player
 
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out \
-	testDrawCard testDrawCard.exe \
-	unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 # remove unittestX later
+	testDrawCard testDrawCard.exe
+	$(foreach el,$(CARDTEST_NUMBERS),rm -f "unittest$(el)";)
+	$(foreach el,$(CARDTEST_NUMBERS),rm -f "cardtest$(el)";)
+	$(foreach el,$(RANDOMTEST_POSTFIX),rm -f "randomtest$(el)";)
