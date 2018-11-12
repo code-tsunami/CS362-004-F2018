@@ -2,8 +2,11 @@
 
 This is my assignment-4 submission!
 
-*To run/build the tests*:
+## To compile:
 ```sh
 make randomtestresults
 ```
-
+## To run:
+```sh
+./randomtestresults
+```
