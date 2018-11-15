@@ -2,9 +2,9 @@
 
 This is my assignment-4 submission!
 
-## To compile/build and run the random tests:
+## To compile/build and run the random tests
 
-Navigate to the dominion dir. 
+Navigate to the dominion dir then run: 
 
 ```sh
 make randomtestresults
