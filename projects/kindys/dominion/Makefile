@@ -3,7 +3,6 @@ CC = gcc
 CARDTEST_NUMBERS = 1 2 3 4
 CARDTEST_OUTFILE = unittestresults.out
 RANDOMTEST_POSTFIX = card1 card2 adventurer
-RANDOMTEST_OUTFILE = randomtestresults.out
 SHELL:=bash
 
 rngs.o: rngs.h rngs.c
@@ -35,7 +34,7 @@ unittests: unittest1.c unittest2.c unittest3.c unittest4.c \
 	$(foreach el,$(CARDTEST_NUMBERS),$(CC) $(CFLAGS) unittest$(el).c dominion.o rngs.o -o unittest$(el);)
 	$(foreach el,$(CARDTEST_NUMBERS),$(CC) $(CFLAGS) cardtest$(el).c dominion.o rngs.o -o cardtest$(el);)
 
-cardtests: randomtestcard1.c randomtestcard2.c randomtestadventurer.c dominion.o rngs.o
+randomtests: randomtestcard1.c randomtestcard2.c randomtestadventurer.c dominion.o rngs.o
 	$(foreach el,$(RANDOMTEST_POSTFIX),$(CC) $(CFLAGS) randomtest$(el).c dominion.o rngs.o -o randomtest$(el);)
 	
 runtests: testDrawCard 
@@ -49,8 +48,7 @@ unittestresults: unittests
 	$(foreach el,$(CARDTEST_NUMBERS),echo "cardtest$(el).c" >> $(CARDTEST_OUTFILE);./cardtest$(el) >> $(CARDTEST_OUTFILE);gcov -f -b dominion.c >> $(CARDTEST_OUTFILE);)
 
 randomtestresults: randomtests
-	echo "Result for running randomcard tests:" > $(RANDOMTEST_OUTFILE)
-	$(foreach el,$(CARDTEST_NUMBERS),echo "randomcardtest$(el).c" >> $(RANDOMTEST_OUTFILE);./randomcardtest$(el) >> $(RANDOMTEST_OUTFILE);gcov -f -b dominion.c >> $(RANDOMTEST_OUTFILE);)
+	$(foreach el,$(RANDOMTEST_POSTFIX),echo "Result for running randomcard tests:" > randomtest$(el).out;echo "randomtest$(el).c" >> randomtest$(el).out;./randomtest$(el) >> randomtest$(el).out;gcov -f -b dominion.c >> randomtest$(el).out;)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
