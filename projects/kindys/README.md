@@ -4,5 +4,5 @@ This is our final project part B submission!
 
 ## To run all tests 
 
-Open the `URLValidatorInCorrect` folder as a new project in Eclipse and select `Run`
+Open the `URLValidatorInCorrect` folder as a new project and select `Run UrlValidatorTest`
 
