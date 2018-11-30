@@ -1,11 +1,8 @@
-# Sonam Kindy (kindys)
+# Sonam Kindy (kindys), Erica Lee(leeerica), Neal Quigley (quigleyn)
 
-This is my assignment-5 submission!
+This is our final project part B submission!
 
-## To compile/build and run the unit tests for Neal's refactored code
+## To run all tests 
 
-Navigate to the quigleynDominion dir then run:
+Open the `URLValidatorInCorrect` folder as a new project in Eclipse and select `Run`
 
-```sh
-make unittestresults
-```
