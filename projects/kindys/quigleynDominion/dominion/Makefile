@@ -42,7 +42,6 @@ runtests: testDrawCard
 
 unittestresults: unittests
 	echo "Result for running unit tests:" > $(CARDTEST_OUTFILE)
-	$(foreach el,$(CARDTEST_NUMBERS),echo "unittest$(el).c" >> $(CARDTEST_OUTFILE);./unittest$(el) >> $(CARDTEST_OUTFILE);gcov -f -b dominion.c >> $(CARDTEST_OUTFILE);)
 	$(foreach el,$(CARDTEST_NUMBERS),echo "cardtest$(el).c" >> $(CARDTEST_OUTFILE);./cardtest$(el) >> $(CARDTEST_OUTFILE);gcov -f -b dominion.c >> $(CARDTEST_OUTFILE);)
 
 randomtestresults: randomtests
