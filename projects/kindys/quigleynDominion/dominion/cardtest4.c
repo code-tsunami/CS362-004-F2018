@@ -116,87 +116,87 @@ void testSmithyCard()
     memcpy(testState, state, sizeof(struct gameState)); // copy contents of state to testState for comparisons
 
     // check first card in hand; should be Smithy -- for tests to work
-    printHeader("CHECK PRE-PLAY:");
+    printHeader("CHECK PRE-PLAY");
     printf(" first card in hand...\nfirst card in hand: %d; expected = %d\n", 
             testState->hand[currentPlayer][handPos], smithy);
     asserttrue(testState->hand[currentPlayer][handPos] == smithy);
 
-    printHeader("CHECK PRE-PLAY:");
+    printHeader("CHECK PRE-PLAY");
     printf(" num actions...\nnum actions = %d; expected = %d\n", testState->numActions, 1);
     asserttrue(testState->numActions == 1);
 
-    printHeader("CHECK PRE-PLAY:");
+    printHeader("CHECK PRE-PLAY");
     printf(" deck count...\ndeck count = %d\n\n", testState->deckCount[currentPlayer]);
 
     // check num discarded/played cards of player; should be 0 at start of game
-    printHeader("CHECK PRE-PLAY:");
+    printHeader("CHECK PRE-PLAY");
     printf(" num discarded...\nnum discarded = %d; expected = %d\n", testState->playedCardCount, 0);
     asserttrue(testState->playedCardCount == 0);
 
     // check first card in other player's hand; should be the same pre/post currentPlayer's play
-    printHeader("CHECK PRE-PLAY (nextPlayer):");
+    printHeader("CHECK PRE-PLAY (nextPlayer)");
     printf(" first card in hand...\nfirst card in hand: %d, expected = %d\n", 
             testState->hand[nextPlayer][handPos], state->hand[nextPlayer][handPos]);
     asserttrue(testState->hand[nextPlayer][handPos] == state->hand[nextPlayer][handPos]);
 
     // check hand count for other player; should be the same pre/post currentPlayer's play
-    printHeader("CHECK PRE-PLAY (nextPlayer):");
+    printHeader("CHECK PRE-PLAY (nextPlayer)");
     printf(" hand count...\nhand count = %d; expected = %d\n", testState->handCount[nextPlayer], state->handCount[nextPlayer]);
     asserttrue(testState->handCount[nextPlayer] == state->handCount[nextPlayer]);
 
     cardEffect(smithy, choice1, choice2, choice3, testState, handPos, &bonus); // play Smithy card
 
-    printHeader("PLAYING CARD:");
+    printHeader("PLAYING CARD");
     printf(" %s (when game just initialized)\n\n", TESTCARD);
     
     // check hand count should be remain the same (Smithy adds +3 cards; discard Smithy card)
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" hand count...\nhand count = %d; expected = %d\n", testState->handCount[currentPlayer], state->handCount[currentPlayer] + newCards - discarded);
     asserttrue(testState->handCount[currentPlayer] == state->handCount[currentPlayer] + newCards - discarded);
 
     // check deck count (Smithy adds +3 cards to hand from deck)
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" deck count...\ndeck count = %d; expected: %d\n", testState->deckCount[currentPlayer], state->deckCount[currentPlayer] - newCards);
     asserttrue(testState->deckCount[currentPlayer] == state->deckCount[currentPlayer] - newCards);
 
     // check num of actions; should remain the same (Smithy adds no add'tl actions)
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" num actions...\nnum actions = %d; expected = %d\n", testState->numActions, state->numActions);
     asserttrue(testState->numActions == state->numActions);
 
     // check num played cards of player; should be 1 after playing Smithy
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" num played cards...\nnum played cards = %d; expected >= %d\n", testState->playedCardCount, state->playedCardCount + discarded);
     asserttrue(testState->playedCardCount >= state->playedCardCount + discarded);
     
     // check last played card; should be Smithy
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" last played card...\nlast played card: %d; expected = %d\n", testState->playedCards[testState->playedCardCount - 1], state->hand[currentPlayer][handPos]);
     asserttrue(testState->playedCards[testState->playedCardCount - 1] == state->hand[currentPlayer][handPos]);
 
     // check num discarded of player; should be 1 after playing Smithy
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" num discarded...\nnum discarded = %d; expected >= %d\n", testState->discardCount[currentPlayer], state->discardCount[currentPlayer] + discarded);
     asserttrue(testState->discardCount[currentPlayer] == state->discardCount[currentPlayer] + discarded);
     
     // check last discarded card; should be Smithy
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" last discarded...\nlast discarded card: %d; expected = %d\n", testState->discard[currentPlayer][testState->discardCount[currentPlayer] - 1], state->hand[currentPlayer][handPos]);
     asserttrue(testState->discard[currentPlayer][testState->discardCount[currentPlayer] - 1] == state->hand[currentPlayer][handPos]);
 
      // check first card in other player's hand; should be the same pre/post currentPlayer's play
-    printHeader("CHECK POST-PLAY (nextPlayer):");
+    printHeader("CHECK POST-PLAY (nextPlayer)");
     printf(" first card in hand...\nfirst card in hand: %d, expected = %d\n", 
             testState->hand[nextPlayer][handPos], state->hand[nextPlayer][handPos]);
     asserttrue(testState->hand[nextPlayer][handPos] == state->hand[nextPlayer][handPos]);
 
     // check hand count for other player; should be the same pre/post currentPlayer's play
-    printHeader("CHECK POST-PLAY (nextPlayer):");
+    printHeader("CHECK POST-PLAY (nextPlayer)");
     printf(" hand count...\nhand count = %d; expected = %d\n", testState->handCount[nextPlayer], state->handCount[nextPlayer]);
     asserttrue(testState->handCount[nextPlayer] == state->handCount[nextPlayer]);
 
     // check supply count for kingdom cards
-    printHeader("CHECK POST-PLAY:");
+    printHeader("CHECK POST-PLAY");
     printf(" supply count of each card...\n\n");
     int i;
     for(i = adventurer; i <= treasure_map; i++) {
